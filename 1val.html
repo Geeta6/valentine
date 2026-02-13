@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Valentine 💖</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* PAGE STYLE */
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(to right, #ff9a9e, #fecfef);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.8s ease;
+}
+
+.hidden {
+    transform: translateX(100%);
+}
+
+.active {
+    transform: translateX(0);
+}
+
+/* TEXT */
+h1, h2, p {
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+/* BUTTONS */
+button {
+    padding: 12px 20px;
+    font-size: 18px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.yes {
+    background-color: #ff4d6d;
+    color: white;
+}
+
+.no {
+    background-color: #ff85a2;
+    color: white;
+}
+
+/* HEART FLOAT */
+.heart {
+    position: fixed;
+    bottom: -10px;
+    font-size: 20px;
+    animation: float 5s linear infinite;
+    color: red;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* IMAGE */
+img {
+    width: 230px;
+    margin-top: 20px;
+    border-radius: 15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page active">
+    <h1>Hey Bandaaa😏💖</h1>
+    <h2>Will you be my Valentine forever? 💋</h2>
+
+    <button class="yes" onclick="nextPage()">Yes 💖</button>
+    <button class="no" id="noBtn" onmouseover="moveNo()">No 😒</button>
+</div>
+
+<!-- QUIZ PAGE -->
+<div id="quiz" class="page hidden">
+    <h2 id="question"></h2>
+    <div id="answers"></div>
+</div>
+
+<!-- FINAL PAGE -->
+<div id="final" class="page hidden">
+
+    <h1>Happy Valentine's Day My Nannaluuuuu💖</h1>
+
+    <p>
+    You'll be forever mine and I'll be yours forever 💕<br><br>
+    I can't stay without you... I need you and I want you 🥺💖<br><br>
+    You're my favorite person in this world and you are my universe 🌍💙<br><br>
+    I'm so lucky to have you in my life 😌💖<br><br>
+    I love you so much and I'll love you forever 💋<br><br>
+    — Your Bujjuluuuu & Sundariii 😘
+    </p>
+
+    <h2>Come to me Baavaaaaaa… your real gift is waiting 💋<3 </h2>
+
+    <img src="https://media.tenor.com/xP5P9I_JvB4AAAAM/stafford-matt.gif">
+
+</div>
+
+<script>
+
+/* FLOATING HEARTS */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 5000);
+}
+setInterval(createHeart, 300);
+
+/* PAGE SWITCH */
+function switchPage(from, to){
+    document.getElementById(from).classList.remove("active");
+    document.getElementById(from).classList.add("hidden");
+
+    document.getElementById(to).classList.remove("hidden");
+    document.getElementById(to).classList.add("active");
+}
+
+/* NO BUTTON RUN AWAY */
+function moveNo(){
+    let btn = document.getElementById("noBtn");
+
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * (window.innerHeight - 50);
+
+    btn.style.position = "absolute";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+}
+
+/* WRONG ANSWER */
+function wrong(){
+    alert("Ayy Banda 😏 Wrong answer! Try again Bhava 💋");
+}
+
+/* HEART BLAST */
+function heartBlast(){
+    for(let i=0;i<50;i++){
+        let heart = document.createElement("div");
+        heart.innerHTML = "💖";
+        heart.style.position = "fixed";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.top = Math.random() * 100 + "vh";
+        heart.style.fontSize = (Math.random()*20+10) + "px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(()=>{
+            heart.remove();
+        },2000);
+    }
+}
+
+/* QUIZ */
+let questions = [
+    {
+        q: "When did we start talking? 💖",
+        a: ["Nov 2 2024", "Jan 1 2025", "Dec 5 2024"],
+        correct: 0
+    },
+    {
+        q: "When did I accept your proposal? 😌",
+        a: ["July 19 2025", "Feb 14 2025", "Aug 1 2025"],
+        correct: 0
+    },
+    {
+        q: "What do you call me most? 💕",
+        a: ["Bujjuluuuu", "Sundariii", "Both"],
+        correct: 2
+    },
+    {
+        q: "What is my favorite color? 🖤",
+        a: ["Black", "Red", "Blue"],
+        correct: 0
+    },
+    {
+        q: "Who loves you the most? 😏💖",
+        a: ["Bujjuluuuu", "Sundariii", "Still me 😌"],
+        correct: 2
+    }
+];
+
+let current = 0;
+
+function nextPage(){
+    switchPage("page1","quiz");
+    showQuestion();
+}
+
+function showQuestion(){
+    if(current >= questions.length){
+        switchPage("quiz","final");
+        heartBlast();
+        return;
+    }
+
+    let q = questions[current];
+    document.getElementById("question").innerText = q.q;
+
+    let ansDiv = document.getElementById("answers");
+    ansDiv.innerHTML = "";
+
+    q.a.forEach((ans, index)=>{
+        let btn = document.createElement("button");
+        btn.innerText = ans;
+        btn.onclick = function(){
+            if(index === q.correct){
+                current++;
+                showQuestion();
+            } else {
+                wrong();
+            }
+        };
+        ansDiv.appendChild(btn);
+    });
+}
+
+</script>
+
+</body>
+</html>
